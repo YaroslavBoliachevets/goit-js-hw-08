@@ -24,4 +24,5 @@ const makeGalleryItemMurkup = galleryItems
 
 divImgEl.insertAdjacentHTML('beforeend', makeGalleryItemMurkup);
 
+
 let gallery = new SimpleLightbox('.gallery a', { captionsData:'alt', captionDelay: 250 });
