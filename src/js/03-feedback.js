@@ -1,3 +1,5 @@
+import throttle from 'lodash.throttle';
+
 const refs = {
   form: document.querySelector('.feedback-form'),
   email: document.querySelector('.feedback-form input'),
@@ -5,13 +7,13 @@ const refs = {
 };
 
 refs.form.addEventListener('submit', onFormSubmit);
-refs.email.addEventListener('input', onTextareaInput);
-refs.textarea.addEventListener('input', onTextareaInput);
+refs.email.addEventListener('input', throttle(onTextareaInput, 500) );
+refs.textarea.addEventListener('input', throttle(onTextareaInput, 500) );
 
 const STORAGE_KEY = 'feedback-form-state';
 
 // Распыляю объект из localStorage или пусто
-const feedbackFormState = { ...getObj(STORAGE_KEY) };
+let feedbackFormState = { ...getObj(STORAGE_KEY) };
 
 // Если что-то есть в localStorage --> заполняю форму
 populateTextarea();
@@ -19,7 +21,9 @@ populateTextarea();
 function onFormSubmit(e) {
   e.preventDefault();
   e.target.reset();
+  console.log('', getObj(STORAGE_KEY));
   localStorage.removeItem(STORAGE_KEY);
+  feedbackFormState = {};
 }
 
 function onTextareaInput(e) {
